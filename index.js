@@ -15,7 +15,7 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.USER_PASSWORD}@c
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 const run = async() => {
     try {
-        const wildCollection = client.db('traver').collection('tourist-services')
+        const wildCollection = client.db('wildData').collection('wildservice')
         const userReviews = client.db('wildData').collection('reviewItem')
 
         app.get('/products', async(req, res) => {
@@ -45,6 +45,12 @@ const run = async() => {
             const id = req.query.delete
             const query ={_id:ObjectId(id)}
             const result = await userReviews.deleteOne(query)
+            res.send(result)
+        }),
+        app.post('/addservices',async(req,res)=>{
+            const item = req.body
+            console.log(item)
+            const result = await wildCollection.insertOne(item)
             res.send(result)
         })
     }
