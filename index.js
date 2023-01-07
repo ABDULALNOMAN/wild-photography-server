@@ -16,6 +16,7 @@ const run = async() => {
     try {
         const wildCollection = client.db('wildData').collection('wildservice')
         const userReviews = client.db('wildData').collection('reviewItem')
+        const winphoto = client.db('wildData').collection("photogallary")
 
         app.get('/products', async(req, res) => {
             const result = await wildCollection.find({}).limit(3).toArray()
@@ -40,7 +41,7 @@ const run = async() => {
             const result = await userReviews.find({}).toArray()
             res.send(result)
         })
-        app.delete('/deletedata',async(req,res)=>{
+        app.delete('/deletedata', async (req, res) => {
             const id = req.query.delete
             const query ={_id:ObjectId(id)}
             const result = await userReviews.deleteOne(query)
@@ -50,6 +51,11 @@ const run = async() => {
             const item = req.body
             console.log(item)
             const result = await wildCollection.insertOne(item)
+            res.send(result)
+        })
+        // photogallary get 
+        app.get('/photogallary', async(req, res) => {
+            const result = await winphoto.find({}).toArray()
             res.send(result)
         })
     }
